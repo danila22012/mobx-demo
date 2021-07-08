@@ -1,7 +1,9 @@
 import styled from "@emotion/styled";
+import { observer } from "mobx-react-lite";
 
 import FileHandler from "../FileHandler/FileHandler";
 import FileMatcher from "../FileMatcher/FileMatcher";
+import dictionary from "../store/index";
 
 const StyledAppContainer = styled.div`
   padding: 0;
@@ -23,15 +25,15 @@ const StyledAppContent = styled.div`
   padding: 30px;
 `;
 
-function App() {
+const App = observer(() => {
   return (
     <StyledAppContainer className="App">
       <StyledAppContent>
         <FileHandler />
-        <FileMatcher />
+        {dictionary.isShownRes ? <FileMatcher /> : null}
       </StyledAppContent>
     </StyledAppContainer>
   );
-}
+}) 
 
 export default App;

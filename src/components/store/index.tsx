@@ -9,7 +9,7 @@ interface wordsMatched {
 
 class Dictionary {
   toMatch = "";
-  isShowRes = false;
+  isShownRes = false;
   wordsMatched:wordsMatched = {
     firstLetterMAtch: 0,
     allLettermatch: 0,
@@ -26,8 +26,8 @@ class Dictionary {
     console.log(e);
     this.wordsMatched = e;
   }
-  setShowRes(e: boolean) {
-    this.isShowRes = e;
+  setShownRes(e: boolean) {
+    this.isShownRes = e;
   }
 }
 export default new Dictionary();

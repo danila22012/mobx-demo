@@ -36,11 +36,15 @@ const FileHandler = observer(() => {
   const [matchRange, setMatchRange] = useState("");
   const [fileContent, setFileConent] = useState(Object);
 
-  const handleFileRead = () => {
+  const handleJsonRead = () => {
     const content = fileReader.result;
-    console.log(fileReader);
     const newContent = content?.toString() || "";
-    setFileConent(JSON.parse(newContent));
+    setFileConent(Object.keys(JSON.parse(newContent)).join(' '));
+  };
+  const handleTxtRead = () => {
+    const content = fileReader.result;
+    setFileConent(content)
+    console.log(content);
   };
   const handleFileChosen = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.files?.length);
@@ -50,7 +54,9 @@ const FileHandler = observer(() => {
       return;
     }
     const file = e.target.files[0];
-    fileReader.onloadend = handleFileRead;
+
+    if (file.type === "application/json") fileReader.onloadend = handleJsonRead;
+    else fileReader.onloadend = handleTxtRead;
 
     fileReader.readAsText(file);
   };
@@ -61,19 +67,21 @@ const FileHandler = observer(() => {
     if (!matchRange) {
       e.preventDefault();
       alert("please write letter for matching in docs");
+      dictionary.setShownRes(false);
       return;
     } else if (Object.keys(fileContent).length === 0) {
       e.preventDefault();
       alert("please upload file to be read");
+      dictionary.setShownRes(false);
       return;
     }
 
     e.preventDefault();
     dictionary.setMatch(matchRange);
     dictionary.setWordsMatched(
-      fileContentMatcher(Object.keys(fileContent), matchRange)
+      fileContentMatcher(fileContent, matchRange)
     );
-    dictionary.setShowRes(true);
+    dictionary.setShownRes(true);
   };
   return (
     <StyledFormContainer>
